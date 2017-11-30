@@ -1,0 +1,30 @@
+{
+  "name": "fainter",
+  "version": "0.1.0",
+  "description": "Yet another eleme openapi sdk.",
+  "main": "index.js",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "node-uuid": "^1.4.8",
+    "request": "^2.81.0",
+    "request-to-curl": "^0.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/magygt/fainter.git"
+  },
+  "keywords": [
+    "eleme",
+    "openapi"
+  ],
+  "author": "magygt",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/magygt/fainter/issues"
+  },
+  "homepage": "https://github.com/magygt/fainter#readme"
+}
