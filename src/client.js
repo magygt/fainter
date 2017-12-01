@@ -58,9 +58,11 @@ class Fainter {
   }
 
   generateInvokeOption(data) {
+    let elemeRequestId = this.generateElemeRequestId()
+    data.id = elemeRequestId
     return {
       url: this.generateInvokeUrl(),
-      headers: this.generateInvokeHeaders(),
+      headers: this.generateInvokeHeaders(elemeRequestId),
       gzip: true,
       json: data
     }
@@ -74,6 +76,10 @@ class Fainter {
       json: true,
       form: form
     }
+  }
+
+  generateElemeRequestId() {
+    return uuid.v4().replace(/-/g, '').toUpperCase()
   }
 
   clientForm() {
@@ -99,7 +105,7 @@ class Fainter {
   }
 
   generateInvokeData(action, params) {
-    let timestamp = parseInt(new Date().getTime()/1000)
+    let timestamp = parseInt(new Date().getTime())
     return {
       token: this.token,
       nop: '1.0.0',
@@ -109,7 +115,6 @@ class Fainter {
       },
       params: params || {},
       action: action,
-      id: uuid.v4(),
       signature: this.generateSignature(timestamp, action, params)
     }
   }
@@ -134,11 +139,27 @@ class Fainter {
     return md5.digest('hex').toUpperCase()
   }
 
-  generateInvokeHeaders() {
+  // userid accuracy issue
+  generateMessageSignature(message) {
+    delete message['signature']
+    let foo = []
+    for (let key in message) {
+      foo.push(`${key}=${message[key]}`)
+    }
+    foo.sort()
+    let sign = foo.join('') + this.appSecret
+    let md5 = crypto.createHash('md5')
+    md5.update(sign);
+    return md5.digest('hex').toUpperCase()
+  }
+
+  generateInvokeHeaders(elemeRequestId) {
+    let id = elemeRequestId + '|' + Date.now().toString()
     return {
       'Content-type': "application/json;charset=utf-8",
       'Accept-Encoding': 'gzip',
-      'User-Agent': 'faint'
+      'User-Agent': 'fainter',
+      'x-eleme-requestid': id
     }
   }
 
