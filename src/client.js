@@ -156,7 +156,7 @@ class Fainter {
   generateInvokeHeaders(elemeRequestId) {
     let id = elemeRequestId + '|' + Date.now().toString()
     return {
-      'Content-type': "application/json;charset=utf-8",
+      'Content-Type': 'application/json;charset=utf-8',
       'Accept-Encoding': 'gzip',
       'User-Agent': 'fainter',
       'x-eleme-requestid': id
@@ -165,9 +165,9 @@ class Fainter {
 
   generateOAuthHeaders() {
     return {
-      'Content-type': "application/x-www-form-urlencoded",
+      'Content-Type': 'application/x-www-form-urlencoded',
       'Accept-Encoding': 'gzip',
-      'User-Agent': 'faint',
+      'User-Agent': 'fainter',
       'Authorization': this.generateAuth()
     }
   }
