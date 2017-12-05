@@ -10,11 +10,13 @@
     "request-to-curl": "^0.1.1"
   },
   "devDependencies": {
+    "coveralls": "^3.0.0",
     "mocha": "^4.0.1",
     "nyc": "^11.3.0"
   },
   "scripts": {
-    "test": "nyc mocha"
+    "test": "nyc --reporter=html --reporter=text mocha",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
