@@ -1,4 +1,5 @@
 # Fainter
+[![Coverage Status](https://coveralls.io/repos/magygt/fainter/badge.svg?branch=master)](https://coveralls.io/r/magygt/fainter?branch=master)
 
 Simple, adaptive eleme openapi sdk which is easy to use.
 
