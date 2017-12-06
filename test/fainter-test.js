@@ -1,8 +1,10 @@
 const assert = require('assert')
 const Fainter = require('../');
+const sinon = require('sinon')
+const request = require('request')
 
 
-describe('Fainter', () => {
+describe('Fainter local', () => {
   let appKey = 'key'
   let appSecret = 'secret'
   let env = 'production'
@@ -181,5 +183,112 @@ describe('Fainter', () => {
     assert.equal(expectUrl, fainter.generateAuthorizeUrl(state, scope, callbackUrl))
   })
 
+})
+
+
+describe('Fainter post success', () => {
+
+  let appKey = 'key'
+  let appSecret = 'secret'
+  let env = 'production'
+
+  let account = {
+    appKey,
+    appSecret,
+    env,
+  }
+  let fainter = new Fainter(account)
+
+  let statusCode = 200
+  let body = {result: 'success'}
+
+  beforeEach(() => {
+    sinon
+      .stub(request, 'post')
+      .yields(null, {statusCode, body}, body)
+  })
+
+  afterEach(() => {
+    request.post.restore()
+  })
+
+  it('post', () => {
+    fainter.post({})
+      .then(res => {
+        assert.ok(res.hasOwnProperty('result'))
+        assert.equal('success', res.result)
+      })
+  })
+
+  it('invoke', () => {
+    fainter.invoke('getUser')
+      .then(res => {
+        assert.ok(res.hasOwnProperty('result'))
+        assert.equal('success', res.result)
+      })
+  })
+
+  it('applyIndividualToken', () => {
+    fainter.applyIndividualToken()
+      .then(res => {
+        assert.ok(res.hasOwnProperty('result'))
+        assert.equal('success', res.result)
+      })
+  })
+
+  it('applyEnterpriseToken', () => {
+    fainter.applyEnterpriseToken('oauth code', 'https://magygt.me')
+      .then(res => {
+        assert.ok(res.hasOwnProperty('result'))
+        assert.equal('success', res.result)
+      })
+  })
+
+  it('refreshEnterpriseToken', () => {
+    fainter.refreshEnterpriseToken('refresh token')
+      .then(res => {
+        assert.ok(res.hasOwnProperty('result'))
+        assert.equal('success', res.result)
+      })
+  })
+})
+
+describe('Fainter post error', () => {
+
+  let appKey = 'key'
+  let appSecret = 'secret'
+  let env = 'production'
+
+  let account = {
+    appKey,
+    appSecret,
+    env,
+  }
+  let fainter = new Fainter(account)
+
+  let statusCode = 502
+  let body = {error: 'service unavailable'}
+
+  beforeEach(() => {
+    sinon
+      .stub(request, 'post')
+      .yields(body, {statusCode, body}, body)
+  })
+
+  afterEach(() => {
+    request.post.restore()
+  })
+
+  it('post error', () => {
+    fainter.post({})
+      .catch(err => {
+        assert.ok(err.hasOwnProperty('code'))
+        assert.equal(statusCode, err.code)
+        assert.ok(err.hasOwnProperty('body'))
+        assert.equal(body, err.body)
+        assert.ok(err.hasOwnProperty('err'))
+        assert.equal(body, err.err)
+      })
+  })
 })
 
