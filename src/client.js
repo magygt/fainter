@@ -13,14 +13,6 @@ class Fainter {
   }
 
   invoke(action, params) {
-    if (!this.token) {
-      return this.applyIndividualToken()
-      .then(res => {
-        this.token = res.access_token
-        let option = this.generateInvokeOption(this.generateInvokeData(action, params))
-        return this.post(option)
-      })
-    }
     let option = this.generateInvokeOption(this.generateInvokeData(action, params))
     return this.post(option)
   }
@@ -44,7 +36,11 @@ class Fainter {
   post(option) {
     return new Promise((resolve, reject) => {
       request.post(option, (err, response, body) => {
-        console.log(response.request.req.toCurl())
+        try {
+          console.log(response.request.req.toCurl())
+        } catch(err) {
+          console.log('req to curl error')
+        }
         if (!err && response.statusCode == 200) {
           resolve(body)
         }
@@ -134,20 +130,6 @@ class Fainter {
     }
     bar.sort()
     var sign = action + this.token + bar.join('') + this.appSecret;
-    let md5 = crypto.createHash('md5')
-    md5.update(sign);
-    return md5.digest('hex').toUpperCase()
-  }
-
-  // userid accuracy issue
-  generateMessageSignature(message) {
-    delete message['signature']
-    let foo = []
-    for (let key in message) {
-      foo.push(`${key}=${message[key]}`)
-    }
-    foo.sort()
-    let sign = foo.join('') + this.appSecret
     let md5 = crypto.createHash('md5')
     md5.update(sign);
     return md5.digest('hex').toUpperCase()
