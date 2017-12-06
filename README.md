@@ -12,7 +12,7 @@ npm install fainter --save
 ## Testing fainter
 
 ```bash
-cd /path/to/mocha
+cd /path/to/fainter
 npm install
 npm test
 ```

@@ -1,6 +1,6 @@
 {
   "name": "fainter",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Yet another eleme openapi sdk.",
   "main": "index.js",
   "dependencies": {
