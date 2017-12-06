@@ -45,6 +45,4 @@ fainter.applyIndividualToken().then(token => {
 
 ## PS
 饿了么服务市场欢迎广大有能力有想法的开发者入驻🤗
-![饿了么服务市场](7xsy7l.com1.z0.glb.clouddn.com/饿了么服务市场.png)
-
 
